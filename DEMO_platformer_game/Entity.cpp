@@ -32,7 +32,6 @@ public:
     }
 
     void update(float dt) {
-        cout << "entity update" << endl;
         rect = { (int)x, (int)y, w, h };
     }
 

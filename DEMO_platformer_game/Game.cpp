@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include "KeyboardHandler.cpp"
 #include "Entity.cpp"
+#include "Player.cpp"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ public:
 	KeyboardHandler* keyboardHandler;
 
 	Entity* deneme;
+	Player* player;
 
 	void init() {
 		SDL_Init(SDL_INIT_EVERYTHING);
@@ -24,6 +26,7 @@ public:
 		keyboardHandler = new KeyboardHandler();
 
 		deneme = new Entity(window->screenSurface,40,40,40,40);
+		player = new Player(window->screenSurface, 40, 40, 40, 40);
 
 
 		this->isRunning = 1;
@@ -46,22 +49,39 @@ public:
 	}
 
 	void gameLoop(float dt) {
-
-		if (keyboardHandler->leftPressed) {
-			deneme->x -= 200 * dt;
-			cout << deneme->x << endl;
-
+		
+		if (keyboardHandler->rightPressed && keyboardHandler->leftPressed) {
+			player->targetAccX = 0;
 		}
-			
-		if (keyboardHandler->rightPressed)
-			deneme->x += 200 * dt;
+		else if (keyboardHandler->rightPressed) {
+			player->targetAccX = 100.0f;
+		}
+		else if (keyboardHandler->leftPressed) {
+			player->targetAccX = -100.0f;
+		}
+		else {
+			player->targetAccX = 0;
+		}
 
-		deneme->update(dt);
+		player->velocityX += player->targetAccX;
+		player->maxSpeedX = 600;
+
+		if (player->velocityX >= player->maxSpeedX)
+			player->velocityX = player->maxSpeedX;
+		if (player->velocityX <= -player->maxSpeedX)
+			player->velocityX = -player->maxSpeedX;
+		
+		player->velocityX *= 50 * dt;
+		player->x += player->velocityX * dt;
+		player->update(dt);
 	}
 
 	void draw() {
 		window->windowRenderBegin();
+		
 		deneme->draw();
+		player->draw();
+
 
 		window->windowRenderEnd();
 	}
