@@ -2,6 +2,8 @@
 #include <SDL.h>
 #include "Game.cpp"
 
+using namespace std;
+
 const int TARGET_FPS = 60;
 const int TARGET_FRAME_TIME = 1000 / TARGET_FPS;
 
@@ -27,7 +29,7 @@ int main(int argc, char* argv[]) {
             lagTime -= TARGET_FRAME_TIME;
         }
         game->draw();
-
+        //cout << game->isRunning << endl;
     }
 
     game->clean();
