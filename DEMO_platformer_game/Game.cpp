@@ -11,6 +11,7 @@
 #include "BouncingObstacle.cpp"
 #include "Prize.cpp"
 #include "BoundaryObstacle.cpp"
+#include <string>
 
 using namespace std;
 
@@ -26,6 +27,8 @@ public:
 	Map* map;
 
 	Prize* prize;
+
+	int score = 0;
 
 
 	void init() {
@@ -82,16 +85,16 @@ public:
 		}
 
 		for (BoundaryObstacle* i : map->boundaryObstacleList) {
-			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt); });
+			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt); score = 0; window->setWindowTitle(std::to_string(score).c_str()); });
 			i->update(dt);
 		}
 
 		for (BouncingObstacle* i : map->bouncingObstacleList) {
-			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt); });
+			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt); score = 0; window->setWindowTitle(std::to_string(score).c_str()); });
 			i->update(dt);
 		}
 		
-		collissionCheck(prize, player, [&]() {prize->playerCollission(dt); });
+		collissionCheck(prize, player, [&]() {prize->playerCollission(dt); score++; window->setWindowTitle(std::to_string(score).c_str()); });
 	}
 
 

@@ -34,4 +34,8 @@ public:
 
 		return 0;
 	}
+
+	void setWindowTitle(const char* title) {
+		SDL_SetWindowTitle(this->win,title);
+	}
 };
