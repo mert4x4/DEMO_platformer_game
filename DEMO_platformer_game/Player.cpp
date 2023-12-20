@@ -29,11 +29,17 @@ public:
     float accY;
 
     void init() {
-        velocityX = 0.0f;
-        rect = { (int)x, (int)y, w, h };
-        accX = 0;
-        targetAccX = 0;
-        grounded = false;
+        this->velocityX = 0;
+        this->accX = 0;
+        this->targetAccX = 0;
+        this->grounded = false;
+        this->velocityY = 0;
+        this->accY = 0;
+        this->canJump = false;
+        this->jumpCounts = 0;
+
+        this->x = 100;
+        this->y = 100;
     }
 
 
@@ -88,6 +94,11 @@ public:
 
         this->grounded = false;
         rect = { (int)x, (int)y, w, h };
+    }
+
+    void obstacleCollission(auto obstacle, auto dt) {
+        this->init();
+        cout << "Player died..." << endl;
     }
 
     void blockCollission(auto block, auto dt) {

@@ -8,6 +8,8 @@
 #include "Player.cpp"
 #include "Block.cpp"
 #include "Map.cpp"
+#include "BouncingObstacle.cpp"
+
 
 using namespace std;
 
@@ -20,6 +22,8 @@ public:
 
 	Player* player;
 
+	BouncingObstacle* obs;
+
 	Map* map;
 
 
@@ -28,15 +32,13 @@ public:
 		window = new Window();
 		window->init_window("asdasdaasda", 640, 480);
 		
-
 		keyboardHandler = new KeyboardHandler();
-
-
-
 
 		player = new Player(window->screenSurface, 40, 100, 40, 40);
 		player->setKeyboardHandler(keyboardHandler);
 		player->setColor(255, 255, 0);
+
+		obs = new BouncingObstacle(window->screenSurface, 40, 100, 20, 20,100,100);
 
 		map = new Map();
 		map->init(window->screenSurface);
@@ -64,11 +66,15 @@ public:
 
 		player->update(dt);
 
+		obs->update(dt);
 
 		for (Block* i : map->blockList) {
 			i->update(dt);
 			collissionCheck(player, i, [&]() {player->blockCollission(i, dt); });
+			collissionCheck(obs, i, [&]() {obs->blockCollission(i, dt); });
 		}
+
+		collissionCheck(player, obs, [&]() {player->obstacleCollission(obs, dt); });
 
 	}
 
@@ -100,6 +106,8 @@ public:
 		}
 
 		player->draw();
+
+		obs->draw();
 
 		window->windowRenderEnd();
 	}
