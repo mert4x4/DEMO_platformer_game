@@ -23,13 +23,10 @@ public:
 
 	Player* player;
 
-	BouncingObstacle* obs;
-
 	Map* map;
 
 	Prize* prize;
 
-	BoundaryObstacle* obs2;
 
 	void init() {
 		SDL_Init(SDL_INIT_EVERYTHING);
@@ -42,14 +39,11 @@ public:
 		player->setKeyboardHandler(keyboardHandler);
 		player->setColor(255, 255, 0);
 
-		obs = new BouncingObstacle(window->screenSurface, 40, 100, 20, 20,100,100);
-
 		map = new Map();
 		map->init(window->screenSurface);
 
 		prize = new Prize(window->screenSurface, 0, 0, 30, 30);
 
-		obs2 = new BoundaryObstacle(window->screenSurface, 400, 400, 30, 30, 100, 0, 500, 400);
 
 
 		this->isRunning = 1;
@@ -75,21 +69,28 @@ public:
 
 		player->update(dt);
 
-		obs->update(dt);
-
 		prize->update(dt);
 
-		obs2->update(dt);
-
 		for (Block* i : map->blockList) {
+
 			i->update(dt);
 			collissionCheck(player, i, [&]() {player->blockCollission(i, dt); });
-			collissionCheck(obs, i, [&]() {obs->blockCollission(i, dt); });
+
+			for (BouncingObstacle* j : map->bouncingObstacleList) {
+				collissionCheck(j, i, [&]() {j->blockCollission(i, dt); });
+			}
 		}
 
-		collissionCheck(player, obs, [&]() {player->obstacleCollission(obs, dt); });
-		collissionCheck(player, obs2, [&]() {player->obstacleCollission(obs2, dt); });
+		for (BoundaryObstacle* i : map->boundaryObstacleList) {
+			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt); });
+			i->update(dt);
+		}
 
+		for (BouncingObstacle* i : map->bouncingObstacleList) {
+			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt); });
+			i->update(dt);
+		}
+		
 		collissionCheck(prize, player, [&]() {prize->playerCollission(dt); });
 	}
 
@@ -120,13 +121,17 @@ public:
 			i->draw();
 		}
 
+		for (BoundaryObstacle* i : map->boundaryObstacleList) {
+			i->draw();
+		}
+
+		for (BouncingObstacle* i : map->bouncingObstacleList) {
+			i->draw();
+		}
+		
 		player->draw();
 
-		obs->draw();
-
 		prize->draw();
-
-		obs2->draw();
 
 		window->windowRenderEnd();
 	}
