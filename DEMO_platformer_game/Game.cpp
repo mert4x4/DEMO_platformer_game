@@ -18,6 +18,7 @@ public:
 
 	Player* player;
 	Block* block;
+	Block* block2;
 
 	void init() {
 		SDL_Init(SDL_INIT_EVERYTHING);
@@ -27,9 +28,10 @@ public:
 
 		keyboardHandler = new KeyboardHandler();
 
-		block = new Block(window->screenSurface,40,40,40,40);
+		block = new Block(window->screenSurface,40,300,400,40);
+		block2 = new Block(window->screenSurface, 40, 40, 400, 40);
 
-		player = new Player(window->screenSurface, 40, 40, 40, 40);
+		player = new Player(window->screenSurface, 40, 100, 40, 40);
 		player->setKeyboardHandler(keyboardHandler);
 		player->setColor(255, 255, 0);
 
@@ -56,9 +58,13 @@ public:
 
 		player->update(dt);
 		block->update(dt);
-		collissionCheck(player, block, [&]() {player->blockCollission(); });
+		block2->update(dt);
 
+		collissionCheck(player, block, [&]() {player->blockCollission(block,dt); });
+		collissionCheck(player, block2, [&]() {player->blockCollission(block2, dt); });
 	}
+
+
 
 	auto collissionCheck(auto e1, auto e2, auto function) {
 		float left1 = e1->x;
@@ -82,6 +88,8 @@ public:
 		window->windowRenderBegin();
 		
 		block->draw();
+		block2->draw();
+
 		player->draw();
 
 		window->windowRenderEnd();
