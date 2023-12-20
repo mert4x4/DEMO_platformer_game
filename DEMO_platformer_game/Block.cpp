@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Entity.cpp"
 
 class Block : public Entity {

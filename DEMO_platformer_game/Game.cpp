@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Window.cpp"
 #include <iostream>
 #include <SDL.h>
@@ -5,7 +7,7 @@
 #include "Entity.cpp"
 #include "Player.cpp"
 #include "Block.cpp"
-
+#include "Map.cpp"
 
 using namespace std;
 
@@ -17,8 +19,9 @@ public:
 	KeyboardHandler* keyboardHandler;
 
 	Player* player;
-	Block* block;
-	Block* block2;
+
+	Map* map;
+
 
 	void init() {
 		SDL_Init(SDL_INIT_EVERYTHING);
@@ -28,12 +31,15 @@ public:
 
 		keyboardHandler = new KeyboardHandler();
 
-		block = new Block(window->screenSurface,40,300,400,40);
-		block2 = new Block(window->screenSurface, 40, 40, 400, 40);
+
+
 
 		player = new Player(window->screenSurface, 40, 100, 40, 40);
 		player->setKeyboardHandler(keyboardHandler);
 		player->setColor(255, 255, 0);
+
+		map = new Map();
+		map->init(window->screenSurface);
 
 		this->isRunning = 1;
 	}
@@ -57,11 +63,13 @@ public:
 		
 
 		player->update(dt);
-		block->update(dt);
-		block2->update(dt);
 
-		collissionCheck(player, block, [&]() {player->blockCollission(block,dt); });
-		collissionCheck(player, block2, [&]() {player->blockCollission(block2, dt); });
+
+		for (Block* i : map->blockList) {
+			i->update(dt);
+			collissionCheck(player, i, [&]() {player->blockCollission(i, dt); });
+		}
+
 	}
 
 
@@ -87,8 +95,9 @@ public:
 	void draw() {
 		window->windowRenderBegin();
 		
-		block->draw();
-		block2->draw();
+		for (Block* i : map->blockList) {
+			i->draw();
+		}
 
 		player->draw();
 
