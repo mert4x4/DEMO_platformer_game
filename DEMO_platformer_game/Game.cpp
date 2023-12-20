@@ -9,7 +9,8 @@
 #include "Block.cpp"
 #include "Map.cpp"
 #include "BouncingObstacle.cpp"
-
+#include "Prize.cpp"
+#include "BoundaryObstacle.cpp"
 
 using namespace std;
 
@@ -26,6 +27,9 @@ public:
 
 	Map* map;
 
+	Prize* prize;
+
+	BoundaryObstacle* obs2;
 
 	void init() {
 		SDL_Init(SDL_INIT_EVERYTHING);
@@ -42,6 +46,11 @@ public:
 
 		map = new Map();
 		map->init(window->screenSurface);
+
+		prize = new Prize(window->screenSurface, 0, 0, 30, 30);
+
+		obs2 = new BoundaryObstacle(window->screenSurface, 400, 400, 30, 30, 100, 0, 500, 400);
+
 
 		this->isRunning = 1;
 	}
@@ -68,6 +77,10 @@ public:
 
 		obs->update(dt);
 
+		prize->update(dt);
+
+		obs2->update(dt);
+
 		for (Block* i : map->blockList) {
 			i->update(dt);
 			collissionCheck(player, i, [&]() {player->blockCollission(i, dt); });
@@ -75,7 +88,9 @@ public:
 		}
 
 		collissionCheck(player, obs, [&]() {player->obstacleCollission(obs, dt); });
+		collissionCheck(player, obs2, [&]() {player->obstacleCollission(obs2, dt); });
 
+		collissionCheck(prize, player, [&]() {prize->playerCollission(dt); });
 	}
 
 
@@ -108,6 +123,10 @@ public:
 		player->draw();
 
 		obs->draw();
+
+		prize->draw();
+
+		obs2->draw();
 
 		window->windowRenderEnd();
 	}
