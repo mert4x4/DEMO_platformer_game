@@ -4,6 +4,8 @@
 #include "KeyboardHandler.cpp"
 #include "Entity.cpp"
 #include "Player.cpp"
+#include "Block.cpp"
+
 
 using namespace std;
 
@@ -14,8 +16,8 @@ public:
 	int isRunning;
 	KeyboardHandler* keyboardHandler;
 
-	Entity* deneme;
 	Player* player;
+	Block* block;
 
 	void init() {
 		SDL_Init(SDL_INIT_EVERYTHING);
@@ -25,13 +27,14 @@ public:
 
 		keyboardHandler = new KeyboardHandler();
 
-		deneme = new Entity(window->screenSurface,40,40,40,40);
-		player = new Player(window->screenSurface, 40, 40, 40, 40);
+		block = new Block(window->screenSurface,40,40,40,40);
 
+		player = new Player(window->screenSurface, 40, 40, 40, 40);
+		player->setKeyboardHandler(keyboardHandler);
+		player->setColor(255, 255, 0);
 
 		this->isRunning = 1;
 	}
-
 
 	void eventHandler() {
 		SDL_Event event;
@@ -50,38 +53,36 @@ public:
 
 	void gameLoop(float dt) {
 		
-		if (keyboardHandler->rightPressed && keyboardHandler->leftPressed) {
-			player->targetAccX = 0;
-		}
-		else if (keyboardHandler->rightPressed) {
-			player->targetAccX = 100.0f;
-		}
-		else if (keyboardHandler->leftPressed) {
-			player->targetAccX = -100.0f;
-		}
-		else {
-			player->targetAccX = 0;
-		}
 
-		player->velocityX += player->targetAccX;
-		player->maxSpeedX = 600;
-
-		if (player->velocityX >= player->maxSpeedX)
-			player->velocityX = player->maxSpeedX;
-		if (player->velocityX <= -player->maxSpeedX)
-			player->velocityX = -player->maxSpeedX;
-		
-		player->velocityX *= 50 * dt;
-		player->x += player->velocityX * dt;
 		player->update(dt);
+		block->update(dt);
+		collissionCheck(player, block, [&]() {player->blockCollission(); });
+
 	}
+
+	auto collissionCheck(auto e1, auto e2, auto function) {
+		float left1 = e1->x;
+		float right1 = e1->x + e1->w;
+		float top1 = e1->y;
+		float bottom1 = e1->y + e1->h;
+
+		float left2 = e2->x;
+		float right2 = e2->x + e2->w;
+		float top2 = e2->y;
+		float bottom2 = e2->y + e2->h;
+
+		if (right1 < left2 || left1 > right2 || bottom1 < top2 || top1 > bottom2) {
+			return;
+		}
+		function();
+	}
+
 
 	void draw() {
 		window->windowRenderBegin();
 		
-		deneme->draw();
+		block->draw();
 		player->draw();
-
 
 		window->windowRenderEnd();
 	}
