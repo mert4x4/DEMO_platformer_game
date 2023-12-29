@@ -49,4 +49,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\SDL2-2.28.5\lib\x64\SDL2.dll" />
+  </ItemGroup>
 </Project>

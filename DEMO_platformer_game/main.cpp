@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
         game->eventHandler();
         game->draw();
 
-
+        
         while (lagTime >= TARGET_FRAME_TIME) {
             game->gameLoop(1.0f / TARGET_FPS);
             lagTime -= TARGET_FRAME_TIME;

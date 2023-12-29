@@ -12,7 +12,7 @@
 #include "Prize.cpp"
 #include "BoundaryObstacle.cpp"
 #include <string>
-
+#include <fstream>
 using namespace std;
 
 class Game {
@@ -52,6 +52,8 @@ public:
 		this->isRunning = 1;
 	}
 
+	
+
 	void eventHandler() {
 		SDL_Event event;
 		SDL_PollEvent(&event);
@@ -85,12 +87,13 @@ public:
 		}
 
 		for (BoundaryObstacle* i : map->boundaryObstacleList) {
-			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt); score = 0; window->setWindowTitle(std::to_string(score).c_str()); });
+			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt);cout << "ASDDSSAD" << endl;this->isRunning = 0;  highScoreHandler();});
+
 			i->update(dt);
 		}
 
 		for (BouncingObstacle* i : map->bouncingObstacleList) {
-			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt); score = 0; window->setWindowTitle(std::to_string(score).c_str()); });
+			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt); this->isRunning = 0; highScoreHandler(); });
 			i->update(dt);
 		}
 		
@@ -146,4 +149,29 @@ public:
 
 	}
 
+	void highScoreHandler() {
+		string filePath = "highscore.txt";
+		ifstream inputFile(filePath);
+		int curHighScore = 0;
+		if (inputFile >> curHighScore)
+		{
+			// File exists
+			ofstream outputFile(filePath);
+			cout << "Found File" << endl;
+			outputFile << max(score, curHighScore);
+			outputFile.close();
+		}
+		else {
+			ofstream outputFile(filePath);
+			cout << "No File but writing" << endl;
+			outputFile << score;
+			outputFile.close();
+		}
+		inputFile.close();
+		
+		}
+
+
 };
+
+

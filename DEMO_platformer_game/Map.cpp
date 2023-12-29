@@ -56,7 +56,7 @@ public:
         ////////////////////////////////////////////////////////////////////
 
         bouncingObstacleList = list<BouncingObstacle*>();
-        obs1 = new BouncingObstacle(screenSurface, 40, 100, 20, 20, 100, 100);
+        obs1 = new BouncingObstacle(screenSurface, 80, 200, 20, 20, 100, 100);
         bouncingObstacleList.push_back(obs1);
 
         /////////////////////////////////////////////////////////////////////
