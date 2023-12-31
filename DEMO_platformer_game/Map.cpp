@@ -86,8 +86,24 @@ public:
 
         /////////////////////////////////////////////////////////////////////
 
+
+
+        
+        PyObject* pGetBoundaryFunc = PyObject_GetAttrString(pModule, "get_boundary_atts");
+        PyObject* pGetBoundaryArgs = PyTuple_Pack(1, pRoot);
+        PyObject* pBoundaryAttributes = PyObject_CallObject(pGetBoundaryFunc, pGetBoundaryArgs);
+        listSize = PyList_Size(pBoundaryAttributes);
+        vector<int> boundary_att_lst;
+        for (Py_ssize_t i = 0; i < listSize; i++) {
+            PyObject* pListItem = PyList_GetItem(pBoundaryAttributes, i);
+            int item = (int)PyLong_AsLong(pListItem);
+            cout << item << endl;
+            boundary_att_lst.push_back(item);
+        }
+        cout << boundary_att_lst.size() << endl;
+
         boundaryObstacleList = list<BoundaryObstacle*>();
-        obs2 = new BoundaryObstacle(screenSurface, 400, 400, 30, 30, 100, 0, 500, 400);
+        obs2 = new BoundaryObstacle(screenSurface, boundary_att_lst[0], boundary_att_lst[1], boundary_att_lst[2], boundary_att_lst[3], boundary_att_lst[4], boundary_att_lst[5], boundary_att_lst[6], boundary_att_lst[7]);
         boundaryObstacleList.push_back(obs2);
 
         cout << "map initied..." << endl;

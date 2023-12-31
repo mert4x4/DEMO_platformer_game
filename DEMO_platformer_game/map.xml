@@ -1,18 +1,29 @@
 <map>
     <character>
-    <x>100</x>
-    <y>100</y>
+        <x>100</x>
+        <y>100</y>
     </character>
     
     <bouncing>
-    <x>150</x>
-    <y>200</y>
-    <w>20</w>
-    <h>20</h>
-    <hspeed>100</hspeed>
-    <vspeed>100</vspeed>
+        <x>150</x>
+        <y>200</y>
+        <w>20</w>
+        <h>20</h>
+        <hspeed>100</hspeed>
+        <vspeed>100</vspeed>
     </bouncing>
 
+
+    <boundary>
+            <x>400</x>
+            <y>400</y>
+            <w>30</w>
+            <h>30</h>
+            <hspeed>100</hspeed>
+            <vspeed>0</vspeed>
+            <endpx>500</endpx>
+            <endpy>400</endpy>
+    </boundary>
 
 
 </map>
