@@ -10,7 +10,7 @@ const int TARGET_FRAME_TIME = 1000 / TARGET_FPS;
 int main(int argc, char* argv[]) {
     Game* game = new Game();
     game->init();
-
+    
     Uint32 prevTime = SDL_GetTicks();
     Uint32 lagTime = 0;
 

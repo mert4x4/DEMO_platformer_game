@@ -30,7 +30,7 @@ public:
 
 	int score = 0;
 
-
+	
 	void init() {
 		SDL_Init(SDL_INIT_EVERYTHING);
 		window = new Window();

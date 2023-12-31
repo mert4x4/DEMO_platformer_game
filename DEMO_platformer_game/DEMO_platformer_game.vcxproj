@@ -71,8 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SDL2-2.28.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDL2-2.28.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\utkua\source\repos\DEMO_platformer_game\DEMO_platformer_game\external\python\include;$(ProjectDir)external\python\include;C:\SDL2-2.28.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)external\python\libs;C:\SDL2-2.28.5\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Users\utkua\source\repos\DEMO_platformer_game\DEMO_platformer_game\external\python\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);;$(ProjectDir)external\python\include</IncludePath>
+    <LibraryPath>$(ProjectDir)external\python\libs;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
