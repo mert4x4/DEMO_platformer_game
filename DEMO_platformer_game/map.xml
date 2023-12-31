@@ -1,7 +1,9 @@
 <map>
     <character>
-        <x>100</x>
+        <x>300</x>
         <y>100</y>
+        <w>40</w>
+        <h>40</h>
     </character>
     
     <bouncing>

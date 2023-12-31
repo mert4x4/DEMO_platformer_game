@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Python.h>
 #include "Window.cpp"
 #include <iostream>
 #include <SDL.h>
@@ -37,8 +38,32 @@ public:
 		window->init_window("asdasdaasda", 640, 480);
 		
 		keyboardHandler = new KeyboardHandler();
+		Py_Initialize();
 
-		player = new Player(window->screenSurface, 40, 100, 40, 40);
+		PyObject* pName = PyUnicode_FromString("xmlp");
+		PyObject* pModule = PyImport_Import(pName);
+
+		cout << "xmlp imported..." << pModule << endl;
+
+		PyObject* pParseXmlFunc = PyObject_GetAttrString(pModule, "parse_xml");
+		PyObject* pParseXmlArgs = PyTuple_Pack(1, Py_BuildValue("s", "map.xml"));
+
+		PyObject* pRoot = PyObject_CallObject(pParseXmlFunc, pParseXmlArgs);
+
+
+		PyObject* pGetCharacterFunc = PyObject_GetAttrString(pModule, "get_character_atts");
+		PyObject* pGetCharacterArgs = PyTuple_Pack(1, pRoot);
+		PyObject* pCharacterAttributes = PyObject_CallObject(pGetCharacterFunc, pGetCharacterArgs);
+		Py_ssize_t listSize = PyList_Size(pCharacterAttributes);
+		vector<int> character_att_lst;
+		for (Py_ssize_t i = 0; i < listSize; i++) {
+			PyObject* pListItem = PyList_GetItem(pCharacterAttributes, i);
+			int item = (int)PyLong_AsLong(pListItem);
+			cout << item << endl;
+			character_att_lst.push_back(item);
+		}
+
+		player = new Player(window->screenSurface, character_att_lst[0], character_att_lst[1], character_att_lst[2], character_att_lst[3]);
 		player->setKeyboardHandler(keyboardHandler);
 		player->setColor(255, 255, 0);
 
@@ -48,6 +73,7 @@ public:
 		prize = new Prize(window->screenSurface, 0, 0, 30, 30);
 
 
+		Py_Finalize();
 
 		this->isRunning = 1;
 	}

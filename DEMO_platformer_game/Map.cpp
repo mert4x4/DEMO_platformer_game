@@ -107,6 +107,8 @@ public:
         boundaryObstacleList.push_back(obs2);
 
         cout << "map initied..." << endl;
+
+        Py_Finalize();
     }
 
 
