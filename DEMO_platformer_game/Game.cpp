@@ -31,7 +31,9 @@ public:
 
 	int score = 0;
 
-	
+	Player* getPlayer() const {
+		return player;
+	}
 	void init() {
 		SDL_Init(SDL_INIT_EVERYTHING);
 		window = new Window();
