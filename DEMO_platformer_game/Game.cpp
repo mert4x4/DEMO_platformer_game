@@ -35,7 +35,7 @@ public:
 	void init() {
 		SDL_Init(SDL_INIT_EVERYTHING);
 		window = new Window();
-		window->init_window("asdasdaasda", 640, 480);
+		window->init_window("DEMO", 640, 480);
 		
 		keyboardHandler = new KeyboardHandler();
 		Py_Initialize();
@@ -113,7 +113,7 @@ public:
 		}
 
 		for (BoundaryObstacle* i : map->boundaryObstacleList) {
-			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt);cout << "ASDDSSAD" << endl;this->isRunning = 0;  highScoreHandler();});
+			collissionCheck(player, i, [&]() {player->obstacleCollission(i, dt);cout << "Collision!!" << endl;this->isRunning = 0;  highScoreHandler();});
 
 			i->update(dt);
 		}
