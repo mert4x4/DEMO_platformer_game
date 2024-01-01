@@ -1,7 +1,6 @@
 #define SDL_MAIN_HANDLED
 #include <iostream>
 #include <SDL.h>
-#include <SDL_ttf.h>
 #include "Game.cpp"
 #include "WelcomeWindow.cpp"
 using namespace std;
@@ -27,7 +26,7 @@ int main(int argc, char* argv[]) {
     while (welcomeRunning && !startGame && !quitGame) {
         while (SDL_PollEvent(&welcomeEvent) != 0) {
             if (welcomeEvent.type == SDL_QUIT) {
-                welcomeRunning = false;
+                quitGame = true;
             }
             welcomeWindow->handleEvent(welcomeEvent, startGame, quitGame);
         }
@@ -43,26 +42,30 @@ int main(int argc, char* argv[]) {
         Uint32 prevTime = SDL_GetTicks();
         Uint32 lagTime = 0;
 
-        while (game->isRunning) {
-            Uint32 currentTime = SDL_GetTicks();
-            Uint32 elapsedTime = currentTime - prevTime;
-            prevTime = currentTime;
-            lagTime += elapsedTime;
+        while (game->isRunning && !quitGame) {
 
-            game->eventHandler();
-            game->draw();
+                Uint32 currentTime = SDL_GetTicks();
+                Uint32 elapsedTime = currentTime - prevTime;
+                prevTime = currentTime;
+                lagTime += elapsedTime;
 
-            while (lagTime >= TARGET_FRAME_TIME) {
-                game->gameLoop(1.0f / TARGET_FPS);
-                lagTime -= TARGET_FRAME_TIME;
-            }
+                game->eventHandler();
+                game->draw();
+
+                while (lagTime >= TARGET_FRAME_TIME) {
+                    game->gameLoop(1.0f / TARGET_FPS);
+                    lagTime -= TARGET_FRAME_TIME;
+                }
+            
         }
 
         game->clean();
         delete game;
+        
     }
 
     SDL_DestroyWindow(welcomeWindowSDL);
+    SDL_Quit();
 
     return 0;
 }
