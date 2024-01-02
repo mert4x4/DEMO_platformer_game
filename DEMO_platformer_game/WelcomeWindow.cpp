@@ -26,7 +26,6 @@ public:
         SDL_FillRect(screenSurface, nullptr, SDL_MapRGB(screenSurface->format, 0, 0, 128)); 
         SDL_FillRect(screenSurface, &startButton, SDL_MapRGB(screenSurface->format, 0, 255, 0)); // Start Button
         SDL_FillRect(screenSurface, &endButton, SDL_MapRGB(screenSurface->format, 255, 0, 0));   // End Button
-        SDL_FillRect(screenSurface, &highScoreField, SDL_MapRGB(screenSurface->format, 255, 255, 255));   // High Score
      }
 
     void handleEvent(SDL_Event& event, bool& startGame, bool& quitGame) {
