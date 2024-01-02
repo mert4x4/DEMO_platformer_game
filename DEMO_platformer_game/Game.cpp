@@ -33,7 +33,6 @@ public:
 
 	string highestScore = readHighestScoreFromFile("highscore.txt");
 
-
 	Player* getPlayer() const {
 		return player;
 	}
