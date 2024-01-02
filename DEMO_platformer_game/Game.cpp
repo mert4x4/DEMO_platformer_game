@@ -31,6 +31,9 @@ public:
 
 	int score = 0;
 
+	string highestScore = readHighestScoreFromFile("highscore.txt");
+
+
 	Player* getPlayer() const {
 		return player;
 	}
@@ -125,7 +128,9 @@ public:
 			i->update(dt);
 		}
 		
-		collissionCheck(prize, player, [&]() {prize->playerCollission(dt); score++; window->setWindowTitle(std::to_string(score).c_str()); });
+		collissionCheck(prize, player, [&]() {prize->playerCollission(dt); score++; window->setWindowTitle((std::to_string(score) + " - Highest Score: " + highestScore).c_str()); });
+
+
 	}
 
 
@@ -197,7 +202,22 @@ public:
 		}
 		inputFile.close();
 		
+	}
+
+	string readHighestScoreFromFile(const std::string& filename) {
+		ifstream file(filename);
+		string highestScore;
+
+		if (file.is_open()) {
+			std::getline(file, highestScore);
+			file.close();
 		}
+		else {
+			std::cerr << "Unable to open file: " << filename << std::endl;
+		}
+
+		return highestScore;
+	}
 
 
 };
