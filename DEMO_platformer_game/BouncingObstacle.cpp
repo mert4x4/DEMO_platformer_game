@@ -13,9 +13,6 @@ public:
 
     BouncingObstacle(SDL_Surface* screenSurface, float x, float y, int w, int h, float hspeed, float vspeed)
         : Entity(screenSurface, x, y, w, h), hspeed(hspeed), vspeed(vspeed) {
-        this->hspeed = hspeed;
-        this->vspeed = vspeed;
-        
         setColor(255, 79, 12);
     }
 

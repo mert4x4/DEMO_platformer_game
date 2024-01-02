@@ -100,7 +100,12 @@ public:
         this->init();
         cout << "Player died..." << endl;
     }
+    Player(SDL_Surface* screenSurface, float x, float y, int w, int h)
+        : Entity(screenSurface, x, y, w, h), velocityX(0), accX(0), targetAccX(0), maxSpeedX(0),
+        canJump(true), grounded(false), jumpCounts(0), maxJumpCount(2), velocityY(0), accY(0) {}
 
+    // Default constructor for creating instances without parameters
+    Player() : Player(nullptr, 0, 0, 0, 0) {}
     void blockCollission(auto block, auto dt) {
         bool objectOnBlock = false;
         float overlapX = std::min(this->x + this->w, block->x + block->w) - std::max(this->x, block->x);
