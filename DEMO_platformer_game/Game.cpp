@@ -86,7 +86,7 @@ public:
 
 		switch (event.type) {
 		case SDL_QUIT:
-			isRunning = 0;
+			isRunning = false;
 			break;
 		default:
 			break;

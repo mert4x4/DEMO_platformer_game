@@ -34,15 +34,19 @@ int main(int argc, char* argv[]) {
         welcomeWindow->draw();
         SDL_UpdateWindowSurface(welcomeWindowSDL);
     }
-    
-    if (startGame) {
+    SDL_DestroyWindow(welcomeWindowSDL);
         Game* game = new Game();
         game->init();
 
         Uint32 prevTime = SDL_GetTicks();
         Uint32 lagTime = 0;
 
-        while (game->isRunning && !quitGame) {
+
+        while (game->isRunning) {
+
+            if (quitGame) {
+                game->isRunning = false;
+            }
 
                 Uint32 currentTime = SDL_GetTicks();
                 Uint32 elapsedTime = currentTime - prevTime;
@@ -62,10 +66,7 @@ int main(int argc, char* argv[]) {
         game->clean();
         delete game;
         
-    }
-
-    SDL_DestroyWindow(welcomeWindowSDL);
-    SDL_Quit();
+        SDL_Quit();
 
     return 0;
 }

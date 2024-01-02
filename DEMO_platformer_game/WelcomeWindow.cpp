@@ -15,7 +15,7 @@ public:
     
     WelcomeWindow(SDL_Surface* screenSurface, int screenWidth, int screenHeight) : screenSurface(screenSurface){
         startButton = { screenWidth / 4 - 25, 3* screenHeight / 8, 200, 50 };
-        endButton = {  2* screenWidth / 4 + 25, 3* screenHeight / 8, 200, 50 }; // Adjusted position
+        endButton = {  2* screenWidth / 4 + 25, 3* screenHeight / 8, 200, 50 }; 
         highScoreField = { 3*screenWidth / 8, 100 + 3* screenHeight / 8, 200, 50 };
     }
 
@@ -23,14 +23,13 @@ public:
     }
     
     void draw() {
-        SDL_FillRect(screenSurface, nullptr, SDL_MapRGB(screenSurface->format, 0, 0, 128)); // Pink color
+        SDL_FillRect(screenSurface, nullptr, SDL_MapRGB(screenSurface->format, 0, 0, 128)); 
         SDL_FillRect(screenSurface, &startButton, SDL_MapRGB(screenSurface->format, 0, 255, 0)); // Start Button
         SDL_FillRect(screenSurface, &endButton, SDL_MapRGB(screenSurface->format, 255, 0, 0));   // End Button
         SDL_FillRect(screenSurface, &highScoreField, SDL_MapRGB(screenSurface->format, 255, 255, 255));   // High Score
      }
 
     void handleEvent(SDL_Event& event, bool& startGame, bool& quitGame) {
-        // Handle events related to the welcome page
         switch (event.type) {
         case SDL_MOUSEBUTTONDOWN:
             if (event.button.button == SDL_BUTTON_LEFT) {
@@ -40,6 +39,7 @@ public:
                 if (isStartButtonClicked(mouseX, mouseY)) {
                     std::cout << "Start button clicked!" << std::endl;
                     startGame = true;
+
                 }
                 else if (isEndButtonClicked(mouseX, mouseY)) {
                     std::cout << "End button clicked!" << std::endl;
@@ -47,6 +47,11 @@ public:
                 }
 
             }
+
+            if (event.type == SDL_QUIT) {
+                quitGame = true;   // This will break out of the game loop
+            }
+
             break;
         }
     }
@@ -62,6 +67,7 @@ public:
     }
 
     ~WelcomeWindow() {
+
     }
 
 };
