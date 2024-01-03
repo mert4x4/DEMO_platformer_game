@@ -203,7 +203,7 @@ public:
 		
 	}
 
-	string readHighestScoreFromFile(const std::string& filename) {
+	static string readHighestScoreFromFile(const std::string& filename) {
 		ifstream file(filename);
 		string highestScore;
 

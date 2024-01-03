@@ -11,7 +11,8 @@ const int TARGET_FRAME_TIME = 1000 / TARGET_FPS;
 int main(int argc, char* argv[]) {
 SDL_SetMainReady();
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* welcomeWindowSDL = SDL_CreateWindow("Welcome", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+    string highestScore = Game::readHighestScoreFromFile("highscore.txt");
+    SDL_Window* welcomeWindowSDL = SDL_CreateWindow(("Welcome - Highest Score: " + highestScore).c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
     SDL_Surface* welcomeScreenSurface = SDL_GetWindowSurface(welcomeWindowSDL);
 
     WelcomeWindow* welcomeWindow = new WelcomeWindow(welcomeScreenSurface, 800, 600);
